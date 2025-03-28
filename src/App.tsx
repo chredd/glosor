@@ -99,6 +99,10 @@ function App() {
                 placeholder="Skriv den engelska översättningen"
                 autoFocus
                 autoComplete="off"
+                autoCorrect="off"
+                spellCheck="false"
+                inputMode="text"
+                name="translation"
               />
               <button type="submit">Kontrollera</button>
             </form>
