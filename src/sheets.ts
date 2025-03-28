@@ -7,6 +7,10 @@ interface Word {
 const SPREADSHEET_ID = process.env.REACT_APP_SPREADSHEET_ID;
 const API_KEY = process.env.REACT_APP_GOOGLE_SHEETS_API_KEY;
 
+console.log('Environment variables check:');
+console.log('SPREADSHEET_ID:', SPREADSHEET_ID ? 'Present' : 'Missing');
+console.log('API_KEY:', API_KEY ? 'Present' : 'Missing');
+
 if (!SPREADSHEET_ID || !API_KEY) {
   console.error('Missing required environment variables for Google Sheets configuration');
   console.log('SPREADSHEET_ID:', SPREADSHEET_ID ? 'Present' : 'Missing');
