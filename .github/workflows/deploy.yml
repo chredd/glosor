@@ -11,9 +11,6 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      REACT_APP_SPREADSHEET_ID: ${{ secrets.REACT_APP_SPREADSHEET_ID }}
-      REACT_APP_GOOGLE_SHEETS_API_KEY: ${{ secrets.REACT_APP_GOOGLE_SHEETS_API_KEY }}
     steps:
       - uses: actions/checkout@v2
       
@@ -27,18 +24,26 @@ jobs:
         
       - name: Debug environment variables
         run: |
-          echo "Checking environment variables:"
-          echo "SPREADSHEET_ID exists: ${{ env.REACT_APP_SPREADSHEET_ID != '' }}"
-          echo "API_KEY exists: ${{ env.REACT_APP_GOOGLE_SHEETS_API_KEY != '' }}"
+          echo "Checking secrets:"
+          echo "SPREADSHEET_ID exists: ${{ secrets.REACT_APP_SPREADSHEET_ID != '' }}"
+          echo "API_KEY exists: ${{ secrets.REACT_APP_GOOGLE_SHEETS_API_KEY != '' }}"
           
       - name: Create .env file
         run: |
           echo "REACT_APP_SPREADSHEET_ID=${{ secrets.REACT_APP_SPREADSHEET_ID }}" >> .env
           echo "REACT_APP_GOOGLE_SHEETS_API_KEY=${{ secrets.REACT_APP_GOOGLE_SHEETS_API_KEY }}" >> .env
+          echo "Created .env file with contents:"
           cat .env
           
       - name: Build
-        run: npm run build
+        env:
+          REACT_APP_SPREADSHEET_ID: ${{ secrets.REACT_APP_SPREADSHEET_ID }}
+          REACT_APP_GOOGLE_SHEETS_API_KEY: ${{ secrets.REACT_APP_GOOGLE_SHEETS_API_KEY }}
+        run: |
+          echo "Building with environment variables:"
+          echo "SPREADSHEET_ID: $REACT_APP_SPREADSHEET_ID"
+          echo "API_KEY: $REACT_APP_GOOGLE_SHEETS_API_KEY"
+          npm run build
         
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
