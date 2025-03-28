@@ -28,6 +28,9 @@ jobs:
           echo "REACT_APP_GOOGLE_SHEETS_API_KEY=${{ secrets.REACT_APP_GOOGLE_SHEETS_API_KEY }}" >> .env
           
       - name: Build
+        env:
+          REACT_APP_SPREADSHEET_ID: ${{ secrets.REACT_APP_SPREADSHEET_ID }}
+          REACT_APP_GOOGLE_SHEETS_API_KEY: ${{ secrets.REACT_APP_GOOGLE_SHEETS_API_KEY }}
         run: npm run build
         
       - name: Deploy to GitHub Pages
