@@ -93,7 +93,7 @@ function App() {
           {!showAnswer ? (
             <form onSubmit={handleSubmit}>
               <input
-                type="text"
+                type="search"
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 placeholder="Skriv den engelska översättningen"
@@ -103,6 +103,11 @@ function App() {
                 spellCheck="false"
                 inputMode="text"
                 name="translation"
+                data-lpignore="true"
+                data-form-type="other"
+                data-gramm="false"
+                data-gramm_editor="false"
+                data-enable-grammarly="false"
               />
               <button type="submit">Kontrollera</button>
             </form>
