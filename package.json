@@ -2,7 +2,7 @@
   "name": "glosor",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://chredd.github.io/glosor/",
+  "homepage": "https://chredd.github.io/glosor",
   "dependencies": {
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
