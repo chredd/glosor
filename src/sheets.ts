@@ -4,10 +4,19 @@ interface Word {
   category?: string;
 }
 
-const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID'; // You'll need to replace this
-const API_KEY = 'YOUR_API_KEY'; // You'll need to replace this
+const SPREADSHEET_ID = process.env.REACT_APP_SPREADSHEET_ID;
+const API_KEY = process.env.REACT_APP_GOOGLE_SHEETS_API_KEY;
+
+if (!SPREADSHEET_ID || !API_KEY) {
+  console.error('Missing required environment variables for Google Sheets configuration');
+}
 
 export async function fetchWords(): Promise<Word[]> {
+  if (!SPREADSHEET_ID || !API_KEY) {
+    console.error('Cannot fetch words: Missing Google Sheets configuration');
+    return [];
+  }
+
   try {
     const response = await fetch(
       `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/A2:B?key=${API_KEY}`
