@@ -4,12 +4,19 @@ interface Word {
   category?: string;
 }
 
+interface Sheet {
+  id: string;
+  name: string;
+}
+
 interface LoadWordsResult {
   words: Word[];
   error?: string;
 }
 
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1aFac2n1Jf7JtDAR2x8h3XS-0xzI7Job3V40X2x8O5uw/export?format=csv';
+// Google Sheets API endpoint for the spreadsheet
+const SPREADSHEET_ID = process.env.REACT_APP_SPREADSHEET_ID;
+const SHEETS_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv`;
 
 // Fisher-Yates shuffle algorithm
 const shuffleArray = <T>(array: T[]): T[] => {
@@ -21,9 +28,37 @@ const shuffleArray = <T>(array: T[]): T[] => {
   return shuffled;
 };
 
-export const loadWords = async (): Promise<LoadWordsResult> => {
+export const loadAvailableSheets = async (): Promise<Sheet[]> => {
   try {
-    const response = await fetch(SHEET_URL);
+    const response = await fetch(SHEETS_URL);
+    if (!response.ok) {
+      throw new Error(`Kunde inte ladda tillgängliga listor: ${response.status} ${response.statusText}`);
+    }
+    const csvText = await response.text();
+    
+    // Parse CSV to get sheet names
+    const sheetNames = csvText
+      .split('\n')
+      .slice(1) // Skip header row
+      .filter(row => row.trim()) // Skip empty rows
+      .map(row => {
+        const [name] = row.split(',').map(cell => cell.trim());
+        return {
+          id: name.toLowerCase().replace(/\s+/g, '-'),
+          name
+        };
+      });
+
+    return sheetNames;
+  } catch (error) {
+    console.error('Fel vid laddning av tillgängliga listor:', error);
+    return [];
+  }
+};
+
+export const loadWords = async (sheetName: string): Promise<LoadWordsResult> => {
+  try {
+    const response = await fetch(`${SHEETS_URL}&sheet=${encodeURIComponent(sheetName)}`);
     if (!response.ok) {
       throw new Error(`Kunde inte ladda orden: ${response.status} ${response.statusText}`);
     }

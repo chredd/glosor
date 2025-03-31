@@ -1,76 +1,61 @@
-# Swedish Translation Practice
+# Glosor - Swedish Vocabulary Learning App
 
-A simple web application for practicing Swedish to English translations. Built with React and TypeScript.
+A React application for learning Swedish vocabulary using Google Sheets as a data source.
 
 ## Features
 
-- Clean, minimalist UI
-- Mobile-friendly design
+- Load vocabulary from Google Sheets
+- Interactive word learning interface
 - Score tracking
-- Words loaded from Google Sheets
-- No autocomplete to ensure proper learning
-- Swedish interface!
+- Word shuffling
+- Summary view with correct/incorrect answers
+- Fireworks animation for perfect scores
 
 ## Setup
 
-### Local Development
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/chredd/glosor.git
-cd glosor
-```
-
+1. Clone the repository
 2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Create a `.env` file in the root directory with your Google Sheets configuration:
-
-```
-REACT_APP_SPREADSHEET_ID=your_spreadsheet_id_here
-REACT_APP_GOOGLE_SHEETS_API_KEY=your_api_key_here
-```
-
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file in the root directory with:
+   ```
+   REACT_APP_SPREADSHEET_ID=your_spreadsheet_id
+   ```
 4. Start the development server:
-
-```bash
-npm start
-```
-
-### Google Sheets Setup
-
-1. Create a Google Spreadsheet with the following format:
-   - Column A: Swedish words/phrases
-   - Column B: English translations
-   - Column C: Category (optional)
-   - First row should be headers
-
-2. Get your Google Sheets API key:
-   - Go to [Google Cloud Console](https://console.cloud.google.com/)
-   - Create a new project or select an existing one
-   - Enable the Google Sheets API
-   - Create credentials (API key)
-   - (Recommended) Restrict the API key to your domain
-
-3. Get your Spreadsheet ID from the URL:
-
-   ```
-   https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit
+   ```bash
+   npm start
    ```
 
-### Deployment
+## Google Sheets Setup
 
-The app is automatically deployed to GitHub Pages when changes are pushed to the main branch.
+1. Create a Google Spreadsheet with your vocabulary
+2. Format your spreadsheet with columns:
+   - Swedish word
+   - English translation
+   - Category (optional)
+3. Publish the spreadsheet to the web:
+   - File > Share > Publish to web
+   - Choose "Entire Document" and "Comma-separated values (.csv)"
+   - Click "Publish"
+4. Copy the spreadsheet ID from the URL and add it to your `.env` file
 
-To deploy manually:
+## Deployment
 
-```bash
-npm run deploy
-```
+The app is deployed to GitHub Pages. To deploy:
+
+1. Push your changes to the main branch
+2. Run:
+   ```bash
+   npm run deploy
+   ```
+
+## Technologies Used
+
+- React
+- TypeScript
+- Google Sheets API
+- CSS3
 
 ## Contributing
 
