@@ -4,7 +4,7 @@ interface Word {
   category?: string;
 }
 
-interface Sheet {
+export interface Sheet {
   id: string;
   name: string;
 }
@@ -69,7 +69,10 @@ export const loadWords = async (sheetName: string): Promise<LoadWordsResult> => 
     const words = rows
       .filter(row => row.trim()) // Skip empty rows
       .map(row => {
-        const [swedish, english, category] = row.split(',').map(cell => cell.trim());
+        const [swedish, english, category] = row.split(',').map(cell => 
+          // Remove quotes and trim whitespace
+          cell.trim().replace(/^["']|["']$/g, '')
+        );
         return {
           swedish,
           english,
