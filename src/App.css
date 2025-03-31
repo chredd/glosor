@@ -232,15 +232,23 @@ p {
 
 .answer {
   margin: 20px 0;
-  padding: 10px;
+  padding: 15px;
   background-color: #f5f5f5;
   border-radius: 4px;
 }
 
-.category {
+.answer p {
+  font-size: 1.5em;
+  font-weight: 500;
+  color: #333;
+  margin: 10px 0;
+}
+
+.answer .category {
   font-size: 0.9em;
   color: #666;
   margin-top: 5px;
+  font-weight: normal;
 }
 
 .buttons {
@@ -328,10 +336,19 @@ button:hover {
 .translation-word .swedish {
   font-weight: bold;
   color: #333;
+  font-size: 1.2em;
 }
 
 .translation-word .english {
+  color: #333;
+  font-size: 1.5em;
+  font-weight: 500;
+}
+
+.translation-item .category {
+  font-size: 0.9em;
   color: #666;
+  font-weight: normal;
 }
 
 .summary-buttons {
