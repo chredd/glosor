@@ -32,7 +32,10 @@ jobs:
       - name: Build
         env:
           REACT_APP_SPREADSHEET_ID: ${{ secrets.REACT_APP_SPREADSHEET_ID }}
-        run: npm run build
+        run: |
+          echo "Building with environment variables:"
+          echo "SPREADSHEET_ID: $REACT_APP_SPREADSHEET_ID"
+          npm run build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
