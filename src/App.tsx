@@ -59,15 +59,17 @@ function App() {
     if (isCorrect) {
       setScore(score + 1);
     }
-    setTranslations(prev => [...prev, {
-      word: words[currentIndex],
-      userAnswer: userInput,
-      isCorrect
-    }]);
     setShowAnswer(true);
   };
 
   const handleNext = () => {
+    if (userInput) {
+      setTranslations(prev => [...prev, {
+        word: words[currentIndex],
+        userAnswer: userInput,
+        isCorrect: userInput.toLowerCase().trim() === words[currentIndex].english.toLowerCase().trim()
+      }]);
+    }
     setShowAnswer(false);
     setUserInput('');
     
@@ -156,18 +158,31 @@ function App() {
             {isPerfectScore && <p className="perfect-score">Perfekt! 🎉</p>}
           </div>
           <div className="translations-list">
-            {translations.map((translation, index) => (
-              <div key={index} className={`translation-item ${translation.isCorrect ? 'correct' : 'incorrect'}`}>
-                <div className="translation-word">
-                  <span className="swedish">{translation.word.swedish}</span>
-                  <span className="english">{translation.word.english}</span>
+            {translations.map((translation, index) => {
+              // Show words where you typed an answer
+              if (translation.userAnswer) {
+                return (
+                  <div key={index} className={`translation-item ${translation.isCorrect ? 'correct' : 'incorrect'}`}>
+                    <div className="translation-word">
+                      <span className="swedish">{translation.word.swedish}</span>
+                      <span className="english">{translation.word.english}</span>
+                    </div>
+                    <p className="user-answer">Ditt svar: {translation.userAnswer}</p>
+                    {translation.word.category && <p className="category">{translation.word.category}</p>}
+                  </div>
+                );
+              }
+              // Show words where you chose Right/Wrong
+              return (
+                <div key={index} className={`translation-item ${translation.isCorrect ? 'correct' : 'incorrect'}`}>
+                  <div className="translation-word">
+                    <span className="swedish">{translation.word.swedish}</span>
+                    <span className="english">{translation.word.english}</span>
+                  </div>
+                  {translation.word.category && <p className="category">{translation.word.category}</p>}
                 </div>
-                {translation.userAnswer && (
-                  <p className="user-answer">Ditt svar: {translation.userAnswer}</p>
-                )}
-                {translation.word.category && <p className="category">{translation.word.category}</p>}
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div className="summary-buttons">
             <button onClick={handleShuffle}>Blanda om</button>
