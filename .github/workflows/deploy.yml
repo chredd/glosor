@@ -25,7 +25,7 @@ jobs:
         
       - name: Replace spreadsheet ID
         run: |
-          find src -type f -name "*.ts" -exec sed -i '' "s|SPREADSHEET_ID_PLACEHOLDER|${{ secrets.REACT_APP_SPREADSHEET_ID }}|g" {} +
+          find src -type f -name "*.ts" -exec sed -i "s|SPREADSHEET_ID_PLACEHOLDER|${{ secrets.REACT_APP_SPREADSHEET_ID }}|g" {} +
           
       - name: Build
         run: npm run build
