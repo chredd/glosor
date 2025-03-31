@@ -360,4 +360,60 @@ button:hover {
 
 .summary-buttons button {
   min-width: 150px;
+}
+
+.input-section {
+  margin: 20px 0;
+}
+
+.input-section form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.input-section input {
+  flex: 1;
+  padding: 12px;
+  font-size: 1.2em;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.input-section input:focus {
+  border-color: #4CAF50;
+}
+
+.input-section button {
+  padding: 12px 24px;
+  white-space: nowrap;
+}
+
+.or-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 15px 0;
+}
+
+.or-divider::before,
+.or-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.or-divider span {
+  padding: 0 10px;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.user-answer {
+  font-size: 1.1em;
+  color: #666;
+  margin: 5px 0;
+  font-style: italic;
 } 

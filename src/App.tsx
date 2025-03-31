@@ -23,6 +23,7 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [translations, setTranslations] = useState<TranslationAttempt[]>([]);
   const [showSummary, setShowSummary] = useState(false);
+  const [userInput, setUserInput] = useState('');
 
   const fetchWords = async () => {
     try {
@@ -39,6 +40,7 @@ function App() {
       setScore(0);
       setTranslations([]);
       setShowSummary(false);
+      setUserInput('');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Kunde inte ladda orden');
     } finally {
@@ -50,16 +52,31 @@ function App() {
     fetchWords();
   }, []);
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const isCorrect = userInput.toLowerCase().trim() === words[currentIndex].english.toLowerCase().trim();
+    if (isCorrect) {
+      setScore(score + 1);
+    }
+    setTranslations(prev => [...prev, {
+      word: words[currentIndex],
+      userAnswer: userInput,
+      isCorrect
+    }]);
+    setShowAnswer(true);
+  };
+
   const handleNext = (correct: boolean) => {
     if (correct) {
       setScore(score + 1);
     }
     setShowAnswer(false);
+    setUserInput('');
     
     // Add current translation to history
     setTranslations(prev => [...prev, {
       word: words[currentIndex],
-      userAnswer: '', // We'll need to track user input
+      userAnswer: userInput,
       isCorrect: correct
     }]);
 
@@ -84,6 +101,7 @@ function App() {
     setShowAnswer(false);
     setTranslations([]);
     setShowSummary(false);
+    setUserInput('');
   };
 
   if (isLoading) {
@@ -140,6 +158,11 @@ function App() {
                   <span className="swedish">{translation.word.swedish}</span>
                   <span className="english">{translation.word.english}</span>
                 </div>
+                {translation.userAnswer && (
+                  <div className="user-answer">
+                    Ditt svar: {translation.userAnswer}
+                  </div>
+                )}
                 {translation.word.category && (
                   <span className="category">{translation.word.category}</span>
                 )}
@@ -176,19 +199,42 @@ function App() {
       </div>
       <div className="card">
         <h2>{currentWord.swedish}</h2>
+        {!showAnswer && (
+          <div className="input-section">
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                placeholder="Skriv den engelska översättningen"
+                autoFocus
+                autoComplete="off"
+                autoCorrect="off"
+                spellCheck="false"
+                inputMode="text"
+                name="translation"
+                data-lpignore="true"
+                data-form-type="other"
+                data-gramm="false"
+                data-gramm_editor="false"
+                data-enable-grammarly="false"
+              />
+              <button type="submit">Kontrollera</button>
+            </form>
+            <div className="or-divider">
+              <span>eller</span>
+            </div>
+            <button onClick={() => setShowAnswer(true)}>Visa svar</button>
+          </div>
+        )}
         {showAnswer && (
           <div className="answer">
             <p>{currentWord.english}</p>
             {currentWord.category && <p className="category">{currentWord.category}</p>}
-          </div>
-        )}
-        {!showAnswer && (
-          <button onClick={() => setShowAnswer(true)}>Visa svar</button>
-        )}
-        {showAnswer && (
-          <div className="buttons">
-            <button onClick={() => handleNext(false)}>Fel</button>
-            <button onClick={() => handleNext(true)}>Rätt</button>
+            <div className="buttons">
+              <button onClick={() => handleNext(false)}>Fel</button>
+              <button onClick={() => handleNext(true)}>Rätt</button>
+            </div>
           </div>
         )}
       </div>
