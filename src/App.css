@@ -244,11 +244,39 @@ p {
   margin: 10px 0;
 }
 
+.answer .correct-answer {
+  font-size: 1.5em;
+  font-weight: 500;
+  color: #4CAF50;
+  margin: 10px 0;
+}
+
 .answer .category {
   font-size: 0.9em;
   color: #666;
   margin-top: 5px;
   font-weight: normal;
+}
+
+.answer .user-answer {
+  font-size: 1.3em;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 2px solid;
+}
+
+.answer .user-answer.correct {
+  color: #4CAF50;
+  border-color: #4CAF50;
+  background-color: #e8f5e9;
+}
+
+.answer .user-answer.incorrect {
+  color: #f44336;
+  border-color: #f44336;
+  background-color: #ffebee;
 }
 
 .buttons {
@@ -257,7 +285,7 @@ p {
   justify-content: center;
 }
 
-button {
+.buttons button {
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -267,15 +295,25 @@ button {
   font-size: 1em;
 }
 
-button:hover {
+.buttons button:hover {
   background-color: #45a049;
 }
 
-.buttons button:first-child {
+/* Style for the Next Word button */
+.buttons button:only-child {
+  background-color: #666;
+}
+
+.buttons button:only-child:hover {
+  background-color: #555;
+}
+
+/* Wrong/Right buttons */
+.buttons button:first-child:not(:only-child) {
   background-color: #f44336;
 }
 
-.buttons button:first-child:hover {
+.buttons button:first-child:not(:only-child):hover {
   background-color: #da190b;
 }
 
@@ -293,15 +331,26 @@ button:hover {
 }
 
 .summary-score {
-  background-color: #f5f5f5;
-  padding: 15px;
-  border-radius: 4px;
-  margin-bottom: 20px;
+  text-align: center;
+  margin: 20px 0;
+  font-size: 1.2em;
 }
 
-.summary-score p {
-  margin: 5px 0;
-  font-size: 1.1em;
+.perfect-score {
+  color: #4CAF50;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 10px;
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .translations-list {

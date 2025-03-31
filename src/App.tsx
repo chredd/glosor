@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { loadWords } from './services/sheets';
+import Fireworks from './components/Fireworks';
 
 interface Word {
   swedish: string;
@@ -66,26 +67,32 @@ function App() {
     setShowAnswer(true);
   };
 
-  const handleNext = (correct: boolean) => {
-    if (correct) {
-      setScore(score + 1);
-    }
+  const handleNext = () => {
     setShowAnswer(false);
     setUserInput('');
     
-    // Add current translation to history
-    setTranslations(prev => [...prev, {
-      word: words[currentIndex],
-      userAnswer: userInput,
-      isCorrect: correct
-    }]);
-
     // Check if we've completed all words
     if (currentIndex + 1 >= words.length) {
       setShowSummary(true);
     } else {
       setCurrentIndex(currentIndex + 1);
     }
+  };
+
+  const handleShowAnswer = () => {
+    setShowAnswer(true);
+  };
+
+  const handleAnswerFeedback = (correct: boolean) => {
+    if (correct) {
+      setScore(score + 1);
+    }
+    setTranslations(prev => [...prev, {
+      word: words[currentIndex],
+      userAnswer: '',
+      isCorrect: correct
+    }]);
+    handleNext();
   };
 
   const handleShuffle = () => {
@@ -99,6 +106,7 @@ function App() {
     });
     setCurrentIndex(0);
     setShowAnswer(false);
+    setScore(0);
     setTranslations([]);
     setShowSummary(false);
     setUserInput('');
@@ -140,38 +148,33 @@ function App() {
   }
 
   if (showSummary) {
+    const isPerfectScore = score === words.length;
     return (
       <div className="container">
+        {isPerfectScore && <Fireworks />}
         <div className="summary">
           <h2>Sammanfattning</h2>
           <div className="summary-score">
-            <p>Din poäng: {score} av {words.length}</p>
+            <p>Poäng denna runda: {score} av {words.length}</p>
             <p>Procent: {Math.round((score / words.length) * 100)}%</p>
+            {isPerfectScore && <p className="perfect-score">Perfekt! 🎉</p>}
           </div>
           <div className="translations-list">
             {translations.map((translation, index) => (
-              <div 
-                key={index} 
-                className={`translation-item ${translation.isCorrect ? 'correct' : 'incorrect'}`}
-              >
+              <div key={index} className={`translation-item ${translation.isCorrect ? 'correct' : 'incorrect'}`}>
                 <div className="translation-word">
                   <span className="swedish">{translation.word.swedish}</span>
                   <span className="english">{translation.word.english}</span>
                 </div>
                 {translation.userAnswer && (
-                  <div className="user-answer">
-                    Ditt svar: {translation.userAnswer}
-                  </div>
+                  <p className="user-answer">Ditt svar: {translation.userAnswer}</p>
                 )}
-                {translation.word.category && (
-                  <span className="category">{translation.word.category}</span>
-                )}
+                {translation.word.category && <p className="category">{translation.word.category}</p>}
               </div>
             ))}
           </div>
           <div className="summary-buttons">
-            <button onClick={handleShuffle}>Blanda och börja om</button>
-            <button onClick={fetchWords}>Ladda nya ord</button>
+            <button onClick={handleShuffle}>Blanda om</button>
           </div>
         </div>
       </div>
@@ -229,18 +232,33 @@ function App() {
         )}
         {showAnswer && (
           <div className="answer">
-            <p>{currentWord.english}</p>
+            {userInput && (
+              <div className={`user-answer ${userInput.toLowerCase().trim() === currentWord.english.toLowerCase().trim() ? 'correct' : 'incorrect'}`}>
+                Ditt svar: {userInput}
+              </div>
+            )}
+            <p className="correct-answer">{currentWord.english}</p>
             {currentWord.category && <p className="category">{currentWord.category}</p>}
             <div className="buttons">
-              <button onClick={() => handleNext(false)}>Fel</button>
-              <button onClick={() => handleNext(true)}>Rätt</button>
+              {userInput ? (
+                <button onClick={handleNext}>
+                  {currentIndex + 1 === words.length ? 'Visa sammanfattning' : 'Nästa ord'}
+                </button>
+              ) : (
+                <>
+                  <button onClick={() => handleAnswerFeedback(false)}>Fel</button>
+                  <button onClick={() => handleAnswerFeedback(true)}>Rätt</button>
+                </>
+              )}
             </div>
           </div>
         )}
       </div>
-      <button className="shuffle-button" onClick={handleShuffle}>
-        Blanda ord
-      </button>
+      {currentIndex === 0 && !showAnswer && (
+        <button className="shuffle-button" onClick={handleShuffle}>
+          Blanda ord
+        </button>
+      )}
     </div>
   );
 }
