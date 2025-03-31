@@ -79,10 +79,6 @@ function App() {
     }
   };
 
-  const handleShowAnswer = () => {
-    setShowAnswer(true);
-  };
-
   const handleAnswerFeedback = (correct: boolean) => {
     if (correct) {
       setScore(score + 1);
