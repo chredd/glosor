@@ -23,19 +23,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: Create .env file
+      - name: Replace spreadsheet ID
         run: |
-          echo "REACT_APP_SPREADSHEET_ID=${{ secrets.REACT_APP_SPREADSHEET_ID }}" > .env
-          echo "Created .env file with contents:"
-          cat .env
+          find src -type f -name "*.ts" -exec sed -i '' "s/SPREADSHEET_ID_PLACEHOLDER/${{ secrets.REACT_APP_SPREADSHEET_ID }}/g" {} +
           
       - name: Build
-        env:
-          REACT_APP_SPREADSHEET_ID: ${{ secrets.REACT_APP_SPREADSHEET_ID }}
-        run: |
-          echo "Building with environment variables:"
-          echo "SPREADSHEET_ID: $REACT_APP_SPREADSHEET_ID"
-          npm run build
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

@@ -15,7 +15,7 @@ interface LoadWordsResult {
 }
 
 // Google Sheets API endpoint for the spreadsheet
-const SPREADSHEET_ID = process.env.REACT_APP_SPREADSHEET_ID;
+const SPREADSHEET_ID = process.env.REACT_APP_SPREADSHEET_ID || 'SPREADSHEET_ID_PLACEHOLDER';
 const SHEETS_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv`;
 
 // Fisher-Yates shuffle algorithm
