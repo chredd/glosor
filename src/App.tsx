@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { loadWords } from './services/sheets';
+import { loadWords, loadAvailableSheets, Sheet } from './services/sheets';
 import Fireworks from './components/Fireworks';
 
 interface Word {
@@ -25,12 +25,18 @@ function App() {
   const [translations, setTranslations] = useState<TranslationAttempt[]>([]);
   const [showSummary, setShowSummary] = useState(false);
   const [userInput, setUserInput] = useState('');
+  const [selectedSheet, setSelectedSheet] = useState<Sheet | null>(null);
 
   const fetchWords = async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const result = await loadWords();
+      const sheets = await loadAvailableSheets();
+      if (sheets.length === 0) {
+        setError('Inga tillgängliga listor hittades');
+        return;
+      }
+      const result = await loadWords(sheets[0].name);
       if (result.error) {
         setError(result.error);
         return;
@@ -47,6 +53,23 @@ function App() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSelectSheet = async (sheet: Sheet) => {
+    setSelectedSheet(sheet);
+    setError(null);
+    const result = await loadWords(sheet.name);
+    if (result.error) {
+      setError(result.error);
+      return;
+    }
+    setWords(result.words);
+    setCurrentIndex(0);
+    setShowAnswer(false);
+    setScore(0);
+    setTranslations([]);
+    setShowSummary(false);
+    setUserInput('');
   };
 
   useEffect(() => {
@@ -248,7 +271,7 @@ function App() {
                 Ditt svar: {userInput}
               </div>
             )}
-            <p className="correct-answer">{currentWord.english}</p>
+            <div className="correct-answer">{currentWord.english}</div>
             {currentWord.category && <p className="category">{currentWord.category}</p>}
             <div className="buttons">
               {userInput ? (
