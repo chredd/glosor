@@ -15,14 +15,19 @@ A React application for learning Swedish vocabulary using Google Sheets as a dat
 
 1. Clone the repository
 2. Install dependencies:
+
    ```bash
    npm install
    ```
+
 3. Create a `.env` file in the root directory with:
+
    ```
    REACT_APP_SPREADSHEET_ID=your_spreadsheet_id
    ```
+
 4. Start the development server:
+
    ```bash
    npm start
    ```
@@ -46,6 +51,7 @@ The app is deployed to GitHub Pages. To deploy:
 
 1. Push your changes to the main branch
 2. Run:
+
    ```bash
    npm run deploy
    ```
@@ -63,7 +69,7 @@ The app is deployed to GitHub Pages. To deploy:
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+5. Open a Pull Request!
 
 ## License
 
