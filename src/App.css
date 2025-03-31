@@ -162,11 +162,13 @@ p {
 .shuffle-button {
   background-color: #2196F3;
   margin-top: 20px;
-  border-radius: 4px;
+  border: none;
+  color: white;
 }
 
 .shuffle-button:hover {
-  background-color: #1976D2;
+  background-color: #42a5f5;
+  color: white;
 }
 
 .loading {
@@ -239,44 +241,23 @@ p {
   border-radius: 4px;
 }
 
-.answer p {
+.correct-answer {
   font-size: 1.5em;
-  font-weight: 500;
-  color: #333;
   margin: 10px 0;
-}
-
-.answer .correct-answer {
-  font-size: 1.5em;
-  font-weight: 500;
   color: #4CAF50;
+}
+
+.user-answer {
+  font-size: 1.2em;
   margin: 10px 0;
 }
 
-.answer .category {
-  font-size: 0.9em;
-  color: #666;
-  margin-top: 5px;
-  font-weight: normal;
-}
-
-.answer .user-answer {
-  font-size: 1.1em;
-  margin: 10px 0;
-  color: #666;
-  font-style: italic;
-}
-
-.answer .user-answer.correct {
+.user-answer.correct {
   color: #4CAF50;
-  border-color: #4CAF50;
-  background-color: #e8f5e9;
 }
 
-.answer .user-answer.incorrect {
+.user-answer.incorrect {
   color: #f44336;
-  border-color: #f44336;
-  background-color: #ffebee;
 }
 
 .buttons {
@@ -286,38 +267,35 @@ p {
   margin: 20px 0;
 }
 
-.buttons button {
-  background-color: #4CAF50;
-  color: white;
+.buttons button:first-child:not(:only-child) {
+  background-color: #f44336;
   border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1em;
+  color: white;
 }
 
-.buttons button:hover {
-  background-color: #45a049;
+.buttons button:first-child:not(:only-child):hover {
+  background-color: #ff6659;
+  color: white;
 }
 
-/* Style for the Next Word button */
+.buttons button:last-child:not(:only-child) {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+}
+
+.buttons button:last-child:not(:only-child):hover {
+  background-color: #66bb6a;
+  color: white;
+}
+
+/* Next word button */
 .buttons button:only-child {
   background-color: #666;
-  border-radius: 4px;
 }
 
 .buttons button:only-child:hover {
   background-color: #555;
-}
-
-/* Wrong/Right buttons */
-.buttons button:first-child:not(:only-child) {
-  background-color: #f44336;
-  border-radius: 4px;
-}
-
-.buttons button:first-child:not(:only-child):hover {
-  background-color: #da190b;
 }
 
 /* Summary styles */
@@ -458,19 +436,6 @@ p {
   padding: 0 10px;
   color: #666;
   font-size: 0.9em;
-}
-
-.user-answer {
-  font-size: 1.2em;
-  margin: 10px 0;
-}
-
-.user-answer.correct {
-  color: #4CAF50;
-}
-
-.user-answer.incorrect {
-  color: #f44336;
 }
 
 .category {
