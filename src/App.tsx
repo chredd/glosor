@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { loadWords, loadAvailableSheets, Sheet } from './services/sheets';
+import { loadWords } from './services/sheets';
 import Fireworks from './components/Fireworks';
 
 interface Word {
@@ -25,51 +25,22 @@ function App() {
   const [translations, setTranslations] = useState<TranslationAttempt[]>([]);
   const [showSummary, setShowSummary] = useState(false);
   const [userInput, setUserInput] = useState('');
-  const [selectedSheet, setSelectedSheet] = useState<Sheet | null>(null);
 
   const fetchWords = async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const sheets = await loadAvailableSheets();
-      if (sheets.length === 0) {
-        setError('Inga tillgängliga listor hittades');
-        return;
-      }
-      const result = await loadWords(sheets[0].name);
+      const result = await loadWords('Sheet1');
       if (result.error) {
         setError(result.error);
         return;
       }
       setWords(result.words);
-      setCurrentIndex(0);
-      setShowAnswer(false);
-      setScore(0);
-      setTranslations([]);
-      setShowSummary(false);
-      setUserInput('');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Kunde inte ladda orden');
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleSelectSheet = async (sheet: Sheet) => {
-    setSelectedSheet(sheet);
-    setError(null);
-    const result = await loadWords(sheet.name);
-    if (result.error) {
-      setError(result.error);
-      return;
-    }
-    setWords(result.words);
-    setCurrentIndex(0);
-    setShowAnswer(false);
-    setScore(0);
-    setTranslations([]);
-    setShowSummary(false);
-    setUserInput('');
   };
 
   useEffect(() => {
