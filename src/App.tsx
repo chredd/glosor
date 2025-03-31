@@ -179,7 +179,7 @@ function App() {
             })}
           </div>
           <div className="summary-buttons">
-            <button onClick={handleShuffle}>Blanda om</button>
+            <button onClick={handleShuffle}>Börja om</button>
           </div>
         </div>
       </div>
@@ -227,7 +227,7 @@ function App() {
                 data-gramm_editor="false"
                 data-enable-grammarly="false"
               />
-              <button type="submit">Kontrollera</button>
+              <button type="submit">Rätta</button>
             </form>
             <div className="or-divider">
               <span>eller</span>
