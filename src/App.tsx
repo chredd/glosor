@@ -191,6 +191,9 @@ function App() {
 
   return (
     <div className="container">
+      <header className="app-header">
+        <h1>Pys glosor</h1>
+      </header>
       <div className="header">
         <div className="score">Poäng: {score}</div>
         <div className="progress">

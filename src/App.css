@@ -497,4 +497,21 @@ p {
   border: 1px solid #f44336;
   border-radius: 4px;
   background-color: #ffebee;
+}
+
+.app-header {
+  text-align: center;
+  margin: -20px -20px 1.5rem -20px;
+  padding: 0.5rem 0;
+  background-color: #4CAF50;
+  border-radius: 0;
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 } 
