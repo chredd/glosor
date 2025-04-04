@@ -27,7 +27,6 @@ function App() {
   const [showSummary, setShowSummary] = useState(false);
   const [userInput, setUserInput] = useState('');
   const [autoSpeak, setAutoSpeak] = useState(false);
-  const [voicesReady, setVoicesReady] = useState(false);
 
   const fetchWords = async () => {
     try {
@@ -48,23 +47,6 @@ function App() {
 
   useEffect(() => {
     fetchWords();
-  }, []);
-
-  useEffect(() => {
-    const handleVoicesChanged = () => {
-      setVoicesReady(true);
-    };
-
-    // Initial check for voices
-    if (window.speechSynthesis.getVoices().length > 0) {
-      setVoicesReady(true);
-    }
-
-    window.speechSynthesis.addEventListener('voiceschanged', handleVoicesChanged);
-
-    return () => {
-      window.speechSynthesis.removeEventListener('voiceschanged', handleVoicesChanged);
-    };
   }, []);
 
   const speak = (text: string, lang: string) => {
