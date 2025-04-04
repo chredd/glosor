@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { loadWords } from './services/sheets';
 import Fireworks from './components/Fireworks';
+import SpeechButton from './components/SpeechButton';
 
 interface Word {
   swedish: string;
@@ -25,6 +26,8 @@ function App() {
   const [translations, setTranslations] = useState<TranslationAttempt[]>([]);
   const [showSummary, setShowSummary] = useState(false);
   const [userInput, setUserInput] = useState('');
+  const [autoSpeak, setAutoSpeak] = useState(false);
+  const [voicesReady, setVoicesReady] = useState(false);
 
   const fetchWords = async () => {
     try {
@@ -46,6 +49,56 @@ function App() {
   useEffect(() => {
     fetchWords();
   }, []);
+
+  useEffect(() => {
+    const handleVoicesChanged = () => {
+      setVoicesReady(true);
+    };
+
+    // Initial check for voices
+    if (window.speechSynthesis.getVoices().length > 0) {
+      setVoicesReady(true);
+    }
+
+    window.speechSynthesis.addEventListener('voiceschanged', handleVoicesChanged);
+
+    return () => {
+      window.speechSynthesis.removeEventListener('voiceschanged', handleVoicesChanged);
+    };
+  }, []);
+
+  const speak = (text: string, lang: string) => {
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang;
+    
+    // Try to find a female voice
+    const voices = window.speechSynthesis.getVoices();
+    const femaleVoice = voices.find(voice => 
+      voice.lang === lang && 
+      voice.name.toLowerCase().includes('female')
+    ) || voices.find(voice => voice.lang === lang);
+    
+    if (femaleVoice) {
+      utterance.voice = femaleVoice;
+    }
+    
+    window.speechSynthesis.speak(utterance);
+  };
+
+  useEffect(() => {
+    if (autoSpeak && words.length > 0) {
+      speak(words[currentIndex].swedish, 'sv-SE');
+    }
+  }, [currentIndex, words, autoSpeak]);
+
+  useEffect(() => {
+    if (autoSpeak && showAnswer) {
+      speak(words[currentIndex].english, 'en-GB');
+    }
+  }, [showAnswer, currentIndex, words, autoSpeak]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -209,7 +262,10 @@ function App() {
         </div>
       </div>
       <div className="card">
-        <h2>{currentWord.swedish}</h2>
+        <h2>
+          {currentWord.swedish}
+          <SpeechButton text={currentWord.swedish} language="sv-SE" />
+        </h2>
         {!showAnswer && (
           <div className="input-section">
             <form onSubmit={handleSubmit}>
@@ -245,7 +301,10 @@ function App() {
                 Ditt svar: {userInput}
               </div>
             )}
-            <div className="correct-answer">{currentWord.english}</div>
+            <div className="correct-answer">
+              {currentWord.english}
+              <SpeechButton text={currentWord.english} language="en-GB" />
+            </div>
             {currentWord.category && <p className="category">{currentWord.category}</p>}
             <div className="buttons">
               {userInput ? (
@@ -267,6 +326,16 @@ function App() {
           Blanda ord
         </button>
       )}
+      <div className="settings">
+        <label className="auto-speak-label">
+          <input
+            type="checkbox"
+            checked={autoSpeak}
+            onChange={(e) => setAutoSpeak(e.target.checked)}
+          />
+          Läs upp ord automatiskt
+        </label>
+      </div>
     </div>
   );
 }
