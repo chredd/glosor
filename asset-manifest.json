@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/glosor/static/css/main.5c6332ad.css",
-    "main.js": "/glosor/static/js/main.652e9132.js",
+    "main.js": "/glosor/static/js/main.9a352c12.js",
     "index.html": "/glosor/index.html",
     "main.5c6332ad.css.map": "/glosor/static/css/main.5c6332ad.css.map",
-    "main.652e9132.js.map": "/glosor/static/js/main.652e9132.js.map"
+    "main.9a352c12.js.map": "/glosor/static/js/main.9a352c12.js.map"
   },
   "entrypoints": [
     "static/css/main.5c6332ad.css",
-    "static/js/main.652e9132.js"
+    "static/js/main.9a352c12.js"
   ]
 }
