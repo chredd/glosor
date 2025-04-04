@@ -18,11 +18,12 @@ const SpeechButton: React.FC<SpeechButtonProps> = ({ text, language }) => {
     const voices = window.speechSynthesis.getVoices();
     const femaleVoice = voices.find(voice => 
       voice.lang === language && 
-      voice.name.toLowerCase().includes('female')
+      voice.name.toLowerCase().includes('daniel')
     ) || voices.find(voice => voice.lang === language);
     
     if (femaleVoice) {
       utterance.voice = femaleVoice;
+      console.log('Selected voice:', femaleVoice.name);
     }
     
     window.speechSynthesis.speak(utterance);

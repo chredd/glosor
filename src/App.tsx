@@ -63,9 +63,10 @@ function App() {
     const voices = window.speechSynthesis.getVoices();
     const femaleVoice = voices.find(voice =>
       voice.lang === lang &&
-      (voice.name.toLowerCase().includes('female') ||
-       voice.name.toLowerCase().includes('woman') ||
-       voice.name.toLowerCase().includes('kvinna'))
+      (voice.name.toLowerCase().includes('daniel') ||
+        voice.name.toLowerCase().includes('female') ||
+        voice.name.toLowerCase().includes('woman') ||
+        voice.name.toLowerCase().includes('kvinna'))
     ) || voices.find(voice => voice.lang === lang);
 
     if (femaleVoice) {
@@ -78,7 +79,8 @@ function App() {
         const newVoices = window.speechSynthesis.getVoices();
         const iosFemaleVoice = newVoices.find(voice =>
           voice.lang === lang &&
-          (voice.name.toLowerCase().includes('female') ||
+          (voice.name.toLowerCase().includes('daniel') ||
+           voice.name.toLowerCase().includes('female') ||
            voice.name.toLowerCase().includes('woman') ||
            voice.name.toLowerCase().includes('kvinna'))
         ) || newVoices.find(voice => voice.lang === lang);
