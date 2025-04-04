@@ -514,4 +514,25 @@ p {
   margin: 0;
   letter-spacing: 0.5px;
   text-transform: uppercase;
+}
+
+.settings {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.auto-speak-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.auto-speak-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 } 
