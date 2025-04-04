@@ -55,19 +55,42 @@ function App() {
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang;
-    
+    utterance.rate = 1.0; // Normal speaking rate
+    utterance.pitch = 1.0; // Normal pitch
+    utterance.volume = 1.0; // Full volume
+
     // Try to find a female voice
     const voices = window.speechSynthesis.getVoices();
     const femaleVoice = voices.find(voice => 
       voice.lang === lang && 
-      voice.name.toLowerCase().includes('female')
+      (voice.name.toLowerCase().includes('female') || 
+       voice.name.toLowerCase().includes('woman') ||
+       voice.name.toLowerCase().includes('kvinna'))
     ) || voices.find(voice => voice.lang === lang);
-    
+
     if (femaleVoice) {
       utterance.voice = femaleVoice;
     }
-    
-    window.speechSynthesis.speak(utterance);
+
+    // For iOS, we need to wait for the voices to be loaded
+    if (voices.length === 0) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        const newVoices = window.speechSynthesis.getVoices();
+        const iosFemaleVoice = newVoices.find(voice => 
+          voice.lang === lang && 
+          (voice.name.toLowerCase().includes('female') || 
+           voice.name.toLowerCase().includes('woman') ||
+           voice.name.toLowerCase().includes('kvinna'))
+        ) || newVoices.find(voice => voice.lang === lang);
+        
+        if (iosFemaleVoice) {
+          utterance.voice = iosFemaleVoice;
+        }
+        window.speechSynthesis.speak(utterance);
+      };
+    } else {
+      window.speechSynthesis.speak(utterance);
+    }
   };
 
   useEffect(() => {
