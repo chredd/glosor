@@ -31,18 +31,18 @@ const SHEETS_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gvi
 const parseCSV = (csvText: string): string[][] => {
   const rows: string[][] = [];
   const lines = csvText.split('\n');
-  
+
   for (const line of lines) {
     if (!line.trim()) continue;
-    
+
     const row: string[] = [];
     let insideQuote = false;
     let cell = '';
-    
+
     for (let i = 0; i < line.length; i++) {
       const char = line[i];
-      
-      if (char === '"' && (i === 0 || line[i-1] !== '\\')) {
+
+      if (char === '"' && (i === 0 || line[i - 1] !== '\\')) {
         insideQuote = !insideQuote;
       } else if (char === ',' && !insideQuote) {
         row.push(cell.trim().replace(/^["']|["']$/g, ''));
@@ -51,14 +51,14 @@ const parseCSV = (csvText: string): string[][] => {
         cell += char;
       }
     }
-    
+
     if (cell) {
       row.push(cell.trim().replace(/^["']|["']$/g, ''));
     }
-    
+
     rows.push(row);
   }
-  
+
   return rows;
 };
 
@@ -85,10 +85,10 @@ export const loadAvailableSheets = async (): Promise<LoadSheetsResult> => {
     if (!response.ok) {
       throw new Error(`Failed to load sheets: ${response.status} ${response.statusText}`);
     }
-    
+
     const csvText = await response.text();
     const rows = parseCSV(csvText).slice(1); // Skip header row
-    
+
     const sheets = rows.map(row => {
       const name = row[0] || 'Unknown';
       return {
@@ -118,18 +118,18 @@ export const loadWords = async (sheetName: string): Promise<LoadWordsResult> => 
       error: 'No sheet name provided'
     };
   }
-  
+
   try {
     const url = `${SHEETS_URL}&sheet=${encodeURIComponent(sheetName)}`;
     const response = await fetch(url);
-    
+
     if (!response.ok) {
       throw new Error(`Failed to load words: ${response.status} ${response.statusText}`);
     }
-    
+
     const csvText = await response.text();
     const rows = parseCSV(csvText).slice(1); // Skip header row
-    
+
     const words = rows
       .filter(row => row.length >= 2)
       .map(row => {
@@ -141,7 +141,7 @@ export const loadWords = async (sheetName: string): Promise<LoadWordsResult> => 
         };
       })
       .filter(word => word.swedish && word.english); // Filter out incomplete entries
-    
+
     if (words.length === 0) {
       return {
         words: [],

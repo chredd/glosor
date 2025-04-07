@@ -15,7 +15,7 @@ const SpeechButton: React.FC<SpeechButtonProps> = ({ text, language }) => {
   };
 
   return (
-    <button 
+    <button
       className="speech-button"
       onClick={handleSpeak}
       aria-label={`Läs upp ${text}`}

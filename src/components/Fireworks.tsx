@@ -13,4 +13,4 @@ const Fireworks: React.FC = () => {
   );
 };
 
-export default Fireworks; 
+export default Fireworks;

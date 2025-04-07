@@ -51,14 +51,14 @@ export function useWords() {
       userAnswer,
       isCorrect
     }]);
-    
+
     // Update score if correct
     if (isCorrect) {
       setScore(score => score + 1);
     }
-    
+
     setShowAnswer(false);
-    
+
     // Check if we've completed all words
     if (currentIndex + 1 >= words.length) {
       setShowSummary(true);
