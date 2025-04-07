@@ -22,7 +22,7 @@ function App() {
     handleNext,
     handleShuffle
   } = useWords();
-  
+
   const [userInput, setUserInput] = useState('');
   const [autoSpeak, setAutoSpeak] = useState(false);
   const { speak } = useSpeech();
@@ -124,8 +124,8 @@ function App() {
         <div className="score">Poäng: {score}</div>
         <div className="progress">
           <div className="progress-bar">
-            <div 
-              className="progress-fill" 
+            <div
+              className="progress-fill"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
