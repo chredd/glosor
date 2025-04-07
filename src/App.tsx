@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import Fireworks from './components/Fireworks';
 import SpeechButton from './components/SpeechButton';
-import { useWords, TranslationAttempt, Word } from './hooks/useWords';
+import { useWords, TranslationAttempt } from './hooks/useWords';
 import { useSpeech } from './services/useSpeech';
 
 function App() {
