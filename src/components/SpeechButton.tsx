@@ -1,5 +1,6 @@
 import React from 'react';
 import './SpeechButton.css';
+import { useSpeech } from '../services/useSpeech';
 
 interface SpeechButtonProps {
   text: string;
@@ -7,26 +8,10 @@ interface SpeechButtonProps {
 }
 
 const SpeechButton: React.FC<SpeechButtonProps> = ({ text, language }) => {
-  const handleSpeak = () => {
-    // Cancel any ongoing speech
-    window.speechSynthesis.cancel();
+  const { speak } = useSpeech();
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = language;
-    
-    // Try to find a female voice
-    const voices = window.speechSynthesis.getVoices();
-    const femaleVoice = voices.find(voice => 
-      voice.lang === language && 
-      voice.name.toLowerCase().includes('daniel')
-    ) || voices.find(voice => voice.lang === language);
-    
-    if (femaleVoice) {
-      utterance.voice = femaleVoice;
-      console.log('Selected voice:', femaleVoice.name);
-    }
-    
-    window.speechSynthesis.speak(utterance);
+  const handleSpeak = () => {
+    speak(text, language);
   };
 
   return (
@@ -34,6 +19,8 @@ const SpeechButton: React.FC<SpeechButtonProps> = ({ text, language }) => {
       className="speech-button"
       onClick={handleSpeak}
       aria-label={`Läs upp ${text}`}
+      title={`Läs upp ${text}`}
+      disabled={!text}
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M11 5L6 9H2v6h4l5 4V5z"/>
@@ -44,4 +31,4 @@ const SpeechButton: React.FC<SpeechButtonProps> = ({ text, language }) => {
   );
 };
 
-export default SpeechButton; 
+export default SpeechButton;
