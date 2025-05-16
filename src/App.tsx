@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import './App.css';
-import Fireworks from './components/Fireworks';
-import SpeechButton from './components/SpeechButton';
-import { useWords, TranslationAttempt } from './hooks/useWords';
-import { useSpeech } from './services/useSpeech';
+import React, { useState } from "react";
+import "./App.css";
+import StarRain from "./components/StarRain";
+import SpeechButton from "./components/SpeechButton";
+import { useWords, TranslationAttempt } from "./hooks/useWords";
+import { useSpeech } from "./services/useSpeech";
 
 function App() {
   const {
@@ -20,23 +20,23 @@ function App() {
     progress,
     totalWords,
     handleNext,
-    handleShuffle
+    handleShuffle,
   } = useWords();
 
-  const [userInput, setUserInput] = useState('');
+  const [userInput, setUserInput] = useState("");
   const [autoSpeak, setAutoSpeak] = useState(false);
   const { speak } = useSpeech();
 
   // Auto speak effects
   React.useEffect(() => {
     if (autoSpeak && words.length > 0 && currentWord) {
-      speak(currentWord.swedish, 'sv-SE');
+      speak(currentWord.swedish, "sv-SE");
     }
   }, [currentIndex, words, autoSpeak, currentWord, speak]);
 
   React.useEffect(() => {
     if (autoSpeak && showAnswer && currentWord) {
-      speak(currentWord.english, 'en-GB');
+      speak(currentWord.english, "en-GB");
     }
   }, [showAnswer, currentWord, autoSpeak, speak]);
 
@@ -46,13 +46,15 @@ function App() {
   };
 
   const handleNextWord = () => {
-    const isCorrect = userInput.toLowerCase().trim() === currentWord?.english.toLowerCase().trim();
+    const isCorrect =
+      userInput.toLowerCase().trim() ===
+      currentWord?.english.toLowerCase().trim();
     handleNext(userInput, isCorrect);
-    setUserInput('');
+    setUserInput("");
   };
 
   const handleAnswerFeedback = (correct: boolean) => {
-    handleNext('', correct);
+    handleNext("", correct);
   };
 
   if (isLoading) {
@@ -72,7 +74,7 @@ function App() {
         <div className="error">
           <h2>Fel</h2>
           <p>{error}</p>
-          <button onClick={() => handleNext('', false)}>Försök igen</button>
+          <button onClick={() => handleNext("", false)}>Försök igen</button>
         </div>
       </div>
     );
@@ -84,7 +86,7 @@ function App() {
         <div className="error">
           <h2>Inga ord tillgängliga</h2>
           <p>Kontrollera kalkylbladet och försök igen.</p>
-          <button onClick={() => handleNext('', false)}>Försök igen</button>
+          <button onClick={() => handleNext("", false)}>Försök igen</button>
         </div>
       </div>
     );
@@ -94,11 +96,13 @@ function App() {
     const isPerfectScore = score === totalWords;
     return (
       <div className="container">
-        {isPerfectScore && <Fireworks />}
+        {isPerfectScore && <StarRain />}
         <div className="summary">
           <h2>Sammanfattning</h2>
           <div className="summary-score">
-            <p>Poäng denna runda: {score} av {totalWords}</p>
+            <p>
+              Poäng denna runda: {score} av {totalWords}
+            </p>
             <p>Procent: {Math.round((score / totalWords) * 100)}%</p>
             {isPerfectScore && <p className="perfect-score">Perfekt! 🎉</p>}
           </div>
@@ -137,7 +141,7 @@ function App() {
       <div className="card">
         <h2>
           {currentWord?.swedish}
-          <SpeechButton text={currentWord?.swedish || ''} language="sv-SE" />
+          <SpeechButton text={currentWord?.swedish || ""} language="sv-SE" />
         </h2>
         {!showAnswer && (
           <div className="input-section">
@@ -170,7 +174,14 @@ function App() {
         {showAnswer && currentWord && (
           <div className="answer">
             {userInput && (
-              <div className={`user-answer ${userInput.toLowerCase().trim() === currentWord.english.toLowerCase().trim() ? 'correct' : 'incorrect'}`}>
+              <div
+                className={`user-answer ${
+                  userInput.toLowerCase().trim() ===
+                  currentWord.english.toLowerCase().trim()
+                    ? "correct"
+                    : "incorrect"
+                }`}
+              >
                 Ditt svar: {userInput}
               </div>
             )}
@@ -178,16 +189,24 @@ function App() {
               {currentWord.english}
               <SpeechButton text={currentWord.english} language="en-GB" />
             </div>
-            {currentWord.category && <p className="category">{currentWord.category}</p>}
+            {currentWord.category && (
+              <p className="category">{currentWord.category}</p>
+            )}
             <div className="buttons">
               {userInput ? (
                 <button onClick={handleNextWord}>
-                  {currentIndex + 1 === totalWords ? 'Visa sammanfattning' : 'Nästa ord'}
+                  {currentIndex + 1 === totalWords
+                    ? "Visa sammanfattning"
+                    : "Nästa ord"}
                 </button>
               ) : (
                 <>
-                  <button onClick={() => handleAnswerFeedback(false)}>Fel</button>
-                  <button onClick={() => handleAnswerFeedback(true)}>Rätt</button>
+                  <button onClick={() => handleAnswerFeedback(false)}>
+                    Fel
+                  </button>
+                  <button onClick={() => handleAnswerFeedback(true)}>
+                    Rätt
+                  </button>
                 </>
               )}
             </div>
@@ -218,24 +237,36 @@ function TranslationItem({ translation }: { translation: TranslationAttempt }) {
   // Show words where you typed an answer
   if (translation.userAnswer) {
     return (
-      <div className={`translation-item ${translation.isCorrect ? 'correct' : 'incorrect'}`}>
+      <div
+        className={`translation-item ${
+          translation.isCorrect ? "correct" : "incorrect"
+        }`}
+      >
         <div className="translation-word">
           <span className="swedish">{translation.word.swedish}</span>
           <span className="english">{translation.word.english}</span>
         </div>
         <p className="user-answer">Ditt svar: {translation.userAnswer}</p>
-        {translation.word.category && <p className="category">{translation.word.category}</p>}
+        {translation.word.category && (
+          <p className="category">{translation.word.category}</p>
+        )}
       </div>
     );
   }
   // Show words where you chose Right/Wrong
   return (
-    <div className={`translation-item ${translation.isCorrect ? 'correct' : 'incorrect'}`}>
+    <div
+      className={`translation-item ${
+        translation.isCorrect ? "correct" : "incorrect"
+      }`}
+    >
       <div className="translation-word">
         <span className="swedish">{translation.word.swedish}</span>
         <span className="english">{translation.word.english}</span>
       </div>
-      {translation.word.category && <p className="category">{translation.word.category}</p>}
+      {translation.word.category && (
+        <p className="category">{translation.word.category}</p>
+      )}
     </div>
   );
 }

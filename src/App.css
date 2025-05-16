@@ -535,4 +535,38 @@ p {
   width: 16px;
   height: 16px;
   cursor: pointer;
-} 
+}
+
+/* Star rain effect */
+.star-rain-overlay {
+  pointer-events: none;
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  top: -40px;
+  opacity: 0.85;
+  animation-name: star-fall;
+  animation-timing-function: ease-in;
+  animation-iteration-count: 1;
+}
+
+@keyframes star-fall {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) scale(0.8) rotate(30deg);
+    opacity: 0;
+  }
+}
