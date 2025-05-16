@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import StarRain from "./components/StarRain";
 import SpeechButton from "./components/SpeechButton";
@@ -28,17 +28,21 @@ function App() {
   const { speak } = useSpeech();
 
   // Auto speak effects
-  React.useEffect(() => {
+  useEffect(() => {
     if (autoSpeak && words.length > 0 && currentWord) {
       speak(currentWord.swedish, "sv-SE");
     }
   }, [currentIndex, words, autoSpeak, currentWord, speak]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (autoSpeak && showAnswer && currentWord) {
       speak(currentWord.english, "en-GB");
     }
   }, [showAnswer, currentWord, autoSpeak, speak]);
+
+  // Helper to check if user answer is correct
+  const isUserAnswerCorrect = () =>
+    userInput.toLowerCase().trim() === currentWord?.english.toLowerCase().trim();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,16 +50,11 @@ function App() {
   };
 
   const handleNextWord = () => {
-    const isCorrect =
-      userInput.toLowerCase().trim() ===
-      currentWord?.english.toLowerCase().trim();
-    handleNext(userInput, isCorrect);
+    handleNext(userInput, isUserAnswerCorrect());
     setUserInput("");
   };
 
-  const handleAnswerFeedback = (correct: boolean) => {
-    handleNext("", correct);
-  };
+  const handleAnswerFeedback = (correct: boolean) => handleNext("", correct);
 
   if (isLoading) {
     return (
@@ -176,10 +175,7 @@ function App() {
             {userInput && (
               <div
                 className={`user-answer ${
-                  userInput.toLowerCase().trim() ===
-                  currentWord.english.toLowerCase().trim()
-                    ? "correct"
-                    : "incorrect"
+                  isUserAnswerCorrect() ? "correct" : "incorrect"
                 }`}
               >
                 Ditt svar: {userInput}
@@ -233,7 +229,9 @@ function App() {
 }
 
 // Extracted component for translation items in the summary
-function TranslationItem({ translation }: { translation: TranslationAttempt }) {
+const TranslationItem: React.FC<{ translation: TranslationAttempt }> = ({
+  translation,
+}) => {
   // Show words where you typed an answer
   if (translation.userAnswer) {
     return (
@@ -269,6 +267,6 @@ function TranslationItem({ translation }: { translation: TranslationAttempt }) {
       )}
     </div>
   );
-}
+};
 
 export default App;
