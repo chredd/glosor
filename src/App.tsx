@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import StarRain from "./components/StarRain";
+
+import UnicornRain from "./components/UnicornRain";
 import SpeechButton from "./components/SpeechButton";
 import { useWords, TranslationAttempt } from "./hooks/useWords";
 import { useSpeech } from "./services/useSpeech";
@@ -95,7 +96,7 @@ function App() {
     const isPerfectScore = score === totalWords;
     return (
       <div className="container">
-        {isPerfectScore && <StarRain />}
+        {isPerfectScore && <UnicornRain />}
         <div className="summary">
           <h2>Sammanfattning</h2>
           <div className="summary-score">
