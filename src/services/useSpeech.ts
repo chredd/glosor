@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback } from "react";
 
 /**
  * Custom hook for text-to-speech functionality
@@ -16,13 +16,15 @@ export function useSpeech() {
 
     // Try to find a good voice
     const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = voices.find(voice =>
-      voice.lang === lang &&
-      (voice.name.toLowerCase().includes('daniel') ||
-        voice.name.toLowerCase().includes('female') ||
-        voice.name.toLowerCase().includes('woman') ||
-        voice.name.toLowerCase().includes('kvinna'))
-    ) || voices.find(voice => voice.lang === lang);
+    const preferredVoice =
+      voices.find(
+        (voice) =>
+          voice.lang === lang &&
+          (voice.name.toLowerCase().includes("daniel") ||
+            voice.name.toLowerCase().includes("female") ||
+            voice.name.toLowerCase().includes("woman") ||
+            voice.name.toLowerCase().includes("kvinna"))
+      ) || voices.find((voice) => voice.lang === lang);
 
     if (preferredVoice) {
       utterance.voice = preferredVoice;
@@ -32,13 +34,15 @@ export function useSpeech() {
     if (voices.length === 0) {
       window.speechSynthesis.onvoiceschanged = () => {
         const newVoices = window.speechSynthesis.getVoices();
-        const iosFemaleVoice = newVoices.find(voice =>
-          voice.lang === lang &&
-          (voice.name.toLowerCase().includes('daniel') ||
-           voice.name.toLowerCase().includes('female') ||
-           voice.name.toLowerCase().includes('woman') ||
-           voice.name.toLowerCase().includes('kvinna'))
-        ) || newVoices.find(voice => voice.lang === lang);
+        const iosFemaleVoice =
+          newVoices.find(
+            (voice) =>
+              voice.lang === lang &&
+              (voice.name.toLowerCase().includes("daniel") ||
+                voice.name.toLowerCase().includes("female") ||
+                voice.name.toLowerCase().includes("woman") ||
+                voice.name.toLowerCase().includes("kvinna"))
+          ) || newVoices.find((voice) => voice.lang === lang);
 
         if (iosFemaleVoice) {
           utterance.voice = iosFemaleVoice;

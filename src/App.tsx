@@ -43,7 +43,8 @@ function App() {
 
   // Helper to check if user answer is correct
   const isUserAnswerCorrect = () =>
-    userInput.toLowerCase().trim() === currentWord?.english.toLowerCase().trim();
+    userInput.toLowerCase().trim() ===
+    currentWord?.english.toLowerCase().trim();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
