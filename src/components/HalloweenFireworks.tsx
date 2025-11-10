@@ -5,13 +5,6 @@ const EMOJIS = ["🎃", "👻"];
 const FIREWORKS_COUNT = 15;
 const PARTICLES_PER_FIREWORK = 8;
 
-function getRandomLaunchPosition() {
-  return {
-    bottom: "0%",
-    left: `${10 + Math.random() * 80}%`,
-  };
-}
-
 function getRandomExplosionPosition() {
   return {
     top: `${10 + Math.random() * 40}%`,
