@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-import HalloweenFireworks from "./components/HalloweenFireworks";
+import SnowFall from "./components/SnowFall";
 import SpeechButton from "./components/SpeechButton";
 import { useWords, TranslationAttempt } from "./hooks/useWords";
 import { useSpeech } from "./services/useSpeech";
@@ -97,7 +97,7 @@ function App() {
     const isPerfectScore = score === totalWords;
     return (
       <div className="container">
-        {isPerfectScore && <HalloweenFireworks />}
+        {isPerfectScore && <SnowFall />}
         <div className="summary">
           <h2>Sammanfattning</h2>
           <div className="summary-score">
