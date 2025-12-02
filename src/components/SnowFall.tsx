@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./SnowFall.css";
 
-const SNOW_EMOJIS = ["❄️", "⛄", "☃️"];
+const CHRISTMAS_EMOJIS = ["🎅", "🎄", "🎁", "🔔", "⭐", "🦌", "🤶"];
 const SNOWFLAKE_COUNT = 30;
 
 interface Snowflake {
@@ -22,7 +22,7 @@ const SnowFall: React.FC = () => {
     for (let i = 0; i < SNOWFLAKE_COUNT; i++) {
       flakes.push({
         id: i,
-        emoji: SNOW_EMOJIS[Math.floor(Math.random() * SNOW_EMOJIS.length)],
+        emoji: CHRISTMAS_EMOJIS[Math.floor(Math.random() * CHRISTMAS_EMOJIS.length)],
         left: Math.random() * 100, // Random position across screen
         animationDuration: 3 + Math.random() * 4, // 3-7 seconds
         animationDelay: Math.random() * 2, // 0-2 seconds delay
